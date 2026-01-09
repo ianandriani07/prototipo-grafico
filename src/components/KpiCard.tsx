@@ -1,12 +1,21 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
+type BadgeVariant = "success" | "warning" | "danger"
+
 type MetricCardProps = {
   title: React.ReactNode
   subtitle: string
   value: number | string
   badgeText?: React.ReactNode
+  badgeVariant?: BadgeVariant
   children: React.ReactNode
+}
+
+const badgeClasses: Record<BadgeVariant, string> = {
+  success: "bg-emerald-500/20 text-emerald-400",
+  warning: "bg-amber-500/20 text-amber-400",   // laranja do print
+  danger:  "bg-rose-500/20 text-rose-400",     // vermelho (bonito no dark)
 }
 
 export function MetricCard({
@@ -14,27 +23,20 @@ export function MetricCard({
   subtitle,
   value,
   badgeText,
+  badgeVariant = "success",
   children,
 }: MetricCardProps) {
   return (
-    <Card className="bg-slate-800 text-slate-100 w-[420px]">
+    <Card className="bg-slate-800 text-slate-100 w-[420px] border-transparent">
       <CardHeader className="pb-0 pt-0 flex justify-between gap-2">
-        <CardTitle className="text-xl font-bold leading-tight">
-          {title}
-        </CardTitle>
+        <CardTitle className="text-xl font-bold leading-tight">{title}</CardTitle>
 
         {badgeText && (
           <Badge
-            className="
-              mt-1
-              bg-emerald-500/20
-              text-emerald-400
-              px-3
-              py-1
-              text-sm
-              font-semibold
-              rounded-full
-            "
+            className={[
+              "mt-1 px-3 py-1 text-sm font-semibold rounded-full",
+              badgeClasses[badgeVariant],
+            ].join(" ")}
           >
             {badgeText}
           </Badge>
