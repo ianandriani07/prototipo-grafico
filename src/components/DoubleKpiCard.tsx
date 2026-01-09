@@ -71,17 +71,17 @@ export function DualDonutCard({
 }: DualDonutCardProps) {
   return (
     <Card className="bg-slate-800 text-slate-100 w-full border-transparent">
-        <CardHeader className="pb-0 pt-0 flex items-center justify-between">
-            <CardTitle className="text-xl font-bold leading-tight">
-                {title}
-            </CardTitle>
+      <CardHeader className="pb-0 pt-0 flex justify-between gap-2">
+        <CardTitle className="text-xl font-bold leading-tight">
+          {title}
+        </CardTitle>
 
-            <div className="text-3xl font-extrabold leading-none text-violet-400">
-                {value}
-            </div>
-        </CardHeader>
+        <div className="text-3xl font-extrabold leading-none text-violet-400">
+          {value}
+        </div>
+      </CardHeader>
 
-      <CardContent className="pt-2 pb-4">
+      <CardContent className="pt-1 pb-0">
 
         <div className="flex items-center justify-center gap-8 py-2">
           <Donut spec={left} />

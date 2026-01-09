@@ -27,7 +27,7 @@ export function MetricCard({
   children,
 }: MetricCardProps) {
   return (
-    <Card className="bg-slate-800 text-slate-100 w-[420px] border-transparent">
+    <Card className="bg-slate-800 text-slate-100 w-full border-transparent">
       <CardHeader className="pb-0 pt-0 flex justify-between gap-2">
         <CardTitle className="text-xl font-bold leading-tight">{title}</CardTitle>
 
