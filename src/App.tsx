@@ -2,8 +2,6 @@ import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Area, AreaChart, Pie, PieCh
 import {
   ChartContainer,
   type ChartConfig,
-  ChartTooltip,
-  ChartTooltipContent,
 } from "@/components/ui/chart"
 
 import { MetricCard } from "@/components/KpiCard"
