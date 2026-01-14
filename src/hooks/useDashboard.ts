@@ -21,6 +21,7 @@ export function useDashboard() {
       } catch (e: any) {
         if (!alive) return
         setError(e?.message ?? "Erro desconhecido")
+        setData(null)
       } finally {
         if (!alive) return
         setLoading(false)
