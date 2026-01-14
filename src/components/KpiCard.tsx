@@ -5,7 +5,7 @@ type BadgeVariant = "success" | "warning" | "danger"
 
 type MetricCardProps = {
   title: React.ReactNode
-  subtitle: string
+  subtitle?: React.ReactNode
   value: number | string
   badgeText?: React.ReactNode
   badgeVariant?: BadgeVariant
@@ -46,7 +46,11 @@ export function MetricCard({
       <CardContent className="pt-1 pb-0">
         <div className="mb-4">
           <div className="text-6xl font-extrabold leading-none">{value}</div>
-          <div className="mt-2 text-sm text-slate-400">{subtitle}</div>
+          {subtitle && (
+            <div className="mt-2 text-sm text-slate-400">
+              {subtitle}
+            </div>
+          )}
         </div>
 
         {children}
