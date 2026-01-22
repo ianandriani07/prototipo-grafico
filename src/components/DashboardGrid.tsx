@@ -146,7 +146,6 @@ export function DashboardGrid({ data }: { data: DashboardResponse }) {
           key={card.codigo}
           title={<>{card.titulo}</>}
           value={card.valor_atual ?? "-"}
-          subtitle={`Atualizado em ${data.dia_atual}`}
           badgeVariant={badgeVariantFromGrowth(card.crescimento_percentual)}
           badgeText={badgeTextFromGrowth(card.crescimento_percentual, data.janela_de_dias)}
         >
