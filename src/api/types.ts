@@ -5,6 +5,7 @@ export type SeriePoint = {
 
 export type DashboardCard = {
   codigo: string
+  tipo_grafico: string
   titulo: string
   valor_atual: number
   media_ultimos_5_dias: number | null
