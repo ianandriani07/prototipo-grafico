@@ -42,14 +42,14 @@ function formatDia(diaISO: string) {
 
 type ChartKind = "area" | "bar" | "pie"
 
-function chartKindFor(codigo: string): ChartKind {
-  if (codigo === "Atendimentos") return "area"
-  if (codigo === "Atendimentos perdidos") return "bar"
+function chartKindFor(tipo_grafico: string): ChartKind {
+  if (tipo_grafico === "A") return "area"
+  if (tipo_grafico === "B") return "bar"
   return "pie"
 }
 
 function renderChart(card: DashboardResponse["cards"][number]) {
-  const kind = chartKindFor(card.codigo)
+  const kind = chartKindFor(card.tipo_grafico)
   const data = card.serie.map((p) => ({ dia: formatDia(p.dia), valor: p.valor }))
 
   if (kind === "area") {
