@@ -1,8 +1,17 @@
 import type { DashboardResponse } from "./types"
 
-export async function fetchDashboardCards(): Promise<DashboardResponse> {
+type FetchDashboardCardsOptions = {
+  signal?: AbortSignal
+}
+
+export async function fetchDashboardCards(
+  options: FetchDashboardCardsOptions = {}
+): Promise<DashboardResponse> {
   // chama a function da Vercel (mesmo domínio)
-  const res = await fetch("/api/cards")
+  const res = await fetch("/api/cards", {
+    cache: "no-store",
+    signal: options.signal,
+  })
   const contentType = res.headers.get("content-type") ?? ""
   const bodyText = await res.text()
   const isJson = contentType.includes("application/json")
