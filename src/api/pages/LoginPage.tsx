@@ -13,6 +13,12 @@ interface LoginPageProps {
 }
 
 export function LoginPage({ onLogin }: LoginPageProps) {
+
+  React.useEffect(() => {
+    document.body.classList.add("bg-background-2")
+    return () => document.body.classList.remove("bg-background-2")
+  }, [])
+
   const [username, setUsername] = React.useState("")
   const [password, setPassword] = React.useState("")
   const [showPassword, setShowPassword] = React.useState(false)
@@ -43,9 +49,9 @@ export function LoginPage({ onLogin }: LoginPageProps) {
   }
 
   return (
-    <div className="relative min-h-screen w-full bg-background-2">
+    <div className="relative min-h-dvh w-full bg-background-2">
       {/* Mobile-first: full screen form */}
-      <div className="flex min-h-screen flex-col">
+      <div className="flex min-h-dvh flex-col">
         {/* Header with brand - Mobile optimized */}
         <header className="flex items-center justify-center px-6 pt-12 pb-8 lg:pt-8 ">
           <div className="flex items-center gap-3">
@@ -121,7 +127,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                       aria-invalid={!!errors.password}
                       disabled={isLoading}
                       className={cn(
-                        "h-12 bg-secondary-2 border-none text-foreground placeholder:text-muted-foreground pr-12 selection:bg-third selection:text-secundary-foreground focus-visible:ring-2 focus-visible:ring-third focus-visible:border-third",
+                        "h-12 bg-secondary-2 border-none text-primary-foreground placeholder:text-muted-foreground pr-12 selection:bg-third selection:text-secundary-foreground focus-visible:ring-2 focus-visible:ring-third focus-visible:border-third",
                         errors.password &&
                           "border-destructive focus-visible:ring-destructive focus-visible:border-destructive"
                       )}
