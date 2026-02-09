@@ -1,7 +1,15 @@
+//import { useAuth } from "@/auth/AuthProvider"
+import { LoginPage } from "./LoginPage"
 import { useDashboard } from "@/hooks/useDashboard"
 import { DashboardGrid } from "@/components/DashboardGrid"
 
 export function App() {
+  const isAuthenticated  = null;
+
+  if (!isAuthenticated) {
+    return <LoginPage />
+  }
+
   const { data, loading, isRefreshing, error } = useDashboard()
 
   return (
