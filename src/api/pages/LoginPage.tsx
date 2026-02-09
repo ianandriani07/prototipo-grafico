@@ -1,85 +1,58 @@
-// src/pages/LoginPage.tsx
-import { useState } from "react"
-import { Switch } from "@/components/ui/switch"
-//import { useAuth } from "@/auth/AuthProvider"
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-//import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+"use client"
+
+import * as React from "react"
+import { Eye, EyeOff, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
+import { cn } from "@/lib/utils"
 
-export function LoginPage() {
+interface LoginPageProps {
+  onLogin?: () => void
+}
 
-    /*
-  const { login } = useAuth()
-  const [email, setEmail] = useState("")
-  const [senha, setSenha] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+export function LoginPage({ onLogin }: LoginPageProps) {
+  const [username, setUsername] = React.useState("")
+  const [password, setPassword] = React.useState("")
+  const [showPassword, setShowPassword] = React.useState(false)
+  const [rememberMe, setRememberMe] = React.useState(false)
+  const [isLoading, setIsLoading] = React.useState(false)
+  const [errors, setErrors] = React.useState<{ username?: string; password?: string }>({})
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    setError(null)
-    setLoading(true)
-
-    
-    try {
-      // TODO: trocar por tua API real:
-      // const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/login`, ...)
-      // const { token } = await resp.json()
-
-      const fakeToken = "token-demo"
-      login(fakeToken)
-    } catch (err) {
-      setError("Falha ao autenticar.")
-    } finally {
-      setLoading(false)
+  const validate = () => {
+    const newErrors: { username?: string; password?: string } = {}
+    if (!username.trim()) {
+      newErrors.username = "Nome de usuário é obrigatório"
     }
+    if (!password.trim()) {
+      newErrors.password = "Senha é obrigatória"
+    }
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
   }
-    */
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!validate()) return
+
+    setIsLoading(true)
+    await new Promise((resolve) => setTimeout(resolve, 1500))
+    setIsLoading(false)
+    onLogin?.()
+  }
 
   return (
-    <div className="relative min-h-screen w-full bg-background">
-      {/* Glow roxo (igual vibe do dashboard) */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background: `
-            radial-gradient(ellipse 80% 50% at 50% -20%, rgba(124, 58, 237, 0.18), transparent 60%),
-            radial-gradient(ellipse 60% 40% at 100% 100%, rgba(124, 58, 237, 0.12), transparent 55%)
-          `,
-        }}
-      />
-
-      {/* Grid sutil */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.06]"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(148, 163, 184, 0.35) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(148, 163, 184, 0.35) 1px, transparent 1px)
-          `,
-          backgroundSize: "64px 64px",
-        }}
-      />
-      
+    <div className="relative min-h-screen w-full bg-background-2">
       {/* Mobile-first: full screen form */}
-      <div className="relative flex min-h-screen flex-col">
+      <div className="flex min-h-screen flex-col">
         {/* Header with brand - Mobile optimized */}
-        <header className="flex items-center justify-center px-6 pt-12 pb-8 lg:pt-8">
+        <header className="flex items-center justify-center px-6 pt-12 pb-8 lg:pt-8 ">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-              <span className="text-lg font-black text-primary-foreground">E</span>
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-third">
+              <span className="text-lg font-black text-secundary-foreground">E</span>
             </div>
-            <span className="text-xl font-bold text-foreground">ExtraDigital</span>
+            <span className="text-xl font-bold text-primary-foreground">Extradigital</span>
           </div>
         </header>
 
@@ -87,96 +60,157 @@ export function LoginPage() {
         <main className="flex flex-1 flex-col lg:flex-row">
           {/* Form section - Mobile first */}
           <div className="flex flex-1 flex-col justify-center px-6 pb-12 lg:max-w-md lg:px-12">
-            <Card className="w-full max-w-sm mx-auto lg:max-w-none border-none bg-transparent shadow-none py-0 gap-0">
-              <CardHeader className="px-0 pb-8 gap-1">
-                <CardTitle className="text-2xl font-bold tracking-tight text-foreground">
+            <div className="w-full max-w-sm mx-auto lg:max-w-none">
+              {/* Welcome text */}
+              <div className="mb-8 space-y-2">
+                <h1 className="text-2xl font-bold tracking-tight text-primary-foreground">
                   Bem-vindo de volta
-                </CardTitle>
-                <CardDescription className="text-sm text-muted-foreground">
+                </h1>
+                <p className="text-sm text-muted-foreground">
                   Entre com suas credenciais para acessar o sistema
-                </CardDescription>
-              </CardHeader>
+                </p>
+              </div>
 
-              <CardContent className="px-0">
-                <form className="space-y-5">
-                  {/* Username field */}
-                  <div className="space-y-2">
-                    <Label htmlFor="username" className="text-foreground">
-                      Usuário
-                    </Label>
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Username field */}
+                <div className="space-y-2">
+                  <Label htmlFor="username" className="text-primary-foreground">
+                    Usuário
+                  </Label>
+                  <Input
+                    id="username"
+                    type="text"
+                    placeholder="Digite seu usuário"
+                    value={username}
+                    onChange={(e) => {
+                      setUsername(e.target.value)
+                      if (errors.username) {
+                        setErrors((prev) => ({ ...prev, username: undefined }))
+                      }
+                    }}
+                    aria-invalid={!!errors.username}
+                    disabled={isLoading}
+                    className={cn(
+                      "h-12 bg-secondary-2 border-none text-primary-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-[#FFBE00] focus:border-[#FFBE00]",
+                      errors.username && "border-destructive focus:ring-destructive"
+                    )}
+                  />
+                  {errors.username && (
+                    <p className="text-sm text-destructive">{errors.username}</p>
+                  )}
+                </div>
+
+                {/* Password field */}
+                <div className="space-y-2">
+                  <Label htmlFor="password" className="text-primary-foreground">
+                    Senha
+                  </Label>
+                  <div className="relative">
                     <Input
-                      id="username"
-                      type="text"
-                      placeholder="Digite seu usuário"
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Digite sua senha"
+                      value={password}
+                      onChange={(e) => {
+                        setPassword(e.target.value)
+                        if (errors.password) {
+                          setErrors((prev) => ({ ...prev, password: undefined }))
+                        }
+                      }}
+                      aria-invalid={!!errors.password}
+                      disabled={isLoading}
+                      className={cn(
+                        "h-12 bg-secondary-2 border-border text-foreground placeholder:text-muted-foreground pr-12 focus:ring-2 focus:ring-primary focus:border-primary",
+                        errors.password && "border-destructive focus:ring-destructive"
+                      )}
                     />
-                  </div>
-
-                  {/* Password field */}
-                  <div className="space-y-2">
-                    <Label htmlFor="password" className="text-foreground">
-                      Senha
-                    </Label>
-                    <div className="relative">
-                      <Input
-                        id="password"
-                        placeholder="Digite sua senha"
-                      />
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        className="absolute right-1 top-1/2 -translate-y-1/2 h-10 w-10 text-muted-foreground hover:text-primary hover:bg-transparent"
-                      >
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Remember me & Forgot password */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Switch />
-                      <Label
-                        htmlFor="remember"
-                        className="cursor-pointer text-sm text-muted-foreground font-normal"
-                      >
-                        Lembrar senha
-                      </Label>
-                    </div>
-                    <Button
+                    <button
                       type="button"
-                      variant="link"
-                      className="text-sm font-medium text-primary p-0 h-auto"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+                      aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
                     >
-                      Esqueceu a senha?
-                    </Button>
+                      {showPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
+                    </button>
                   </div>
+                  {errors.password && (
+                    <p className="text-sm text-destructive">{errors.password}</p>
+                  )}
+                </div>
 
-                  {/* Submit button */}
-                  <Button
-                    type="submit"
-                    size="lg"
-                    className="h-12 w-full text-base font-semibold"
+                {/* Remember me & Forgot password */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      id="remember"
+                      checked={rememberMe}
+                      onCheckedChange={setRememberMe}
+                      disabled={isLoading}
+                      className="data-[state=checked]:bg-third"
+                    />
+                    <Label
+                      htmlFor="remember"
+                      className="cursor-pointer text-sm text-muted-foreground"
+                    >
+                      Lembrar senha
+                    </Label>
+                  </div>
+                  <button
+                    type="button"
+                    className="text-sm font-medium text-third transition-colors hover:text-third/80" 
                   >
-                  </Button>
-                </form>
-              </CardContent>
+                    Esqueceu a senha?
+                  </button>
+                </div>
 
-            </Card>
+                {/* Submit button - Primary yellow CTA */}
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="h-12 w-full text-base font-semibold bg-third text-background-2 hover:bg-third/90 focus:ring-2 focus:ring-third focus:ring-offset-2 focus:ring-offset-background"
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                      Entrando...
+                    </>
+                  ) : (
+                    "Entrar"
+                  )}
+                </Button>
+              </form>
+
+              {/* Footer text */}
+              <p className="mt-8 text-center text-xs text-muted-foreground">
+                Ao entrar, você concorda com nossos{" "}
+                <button type="button" className="text-third hover:underline">
+                  Termos de Uso
+                </button>{" "}
+                e{" "}
+                <button type="button" className="text-third hover:underline">
+                  Política de Privacidade
+                </button>
+              </p>
+            </div>
           </div>
 
           {/* Brand section - Desktop only */}
-          <Card className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-center lg:p-12 rounded-none border-none shadow-none">
-            <CardContent className="max-w-md space-y-6 text-center p-0">
-              <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-primary">
-                <span className="text-3xl font-black text-primary-foreground">E</span>
+          <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-center lg:bg-background-3 lg:p-12">
+            <div className="max-w-md space-y-6 text-center">
+              <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-third">
+                <span className="text-3xl font-black text-secondary-foreground">E</span>
               </div>
-              <CardTitle className="text-balance text-2xl font-bold tracking-tight text-foreground">
+              <h2 className="text-balance text-2xl font-bold tracking-tight text-primary-foreground">
                 Sistema de Gestão de Atendimentos
-              </CardTitle>
-              <CardDescription className="text-pretty text-muted-foreground text-base">
+              </h2>
+              <p className="text-pretty text-muted-foreground">
                 Gerencie seus atendimentos de forma eficiente, acompanhe métricas em tempo real
                 e otimize o fluxo de trabalho do seu cartório.
-              </CardDescription>
+              </p>
               
               {/* Stats preview */}
               <div className="grid grid-cols-3 gap-4 pt-6">
@@ -185,25 +219,19 @@ export function LoginPage() {
                   { label: "TMA", value: "32 min" },
                   { label: "Hoje", value: "87" },
                 ].map((stat) => (
-                  <Card
+                  <div
                     key={stat.label}
-                    className="px-4 py-3 border-none bg-secondary shadow-none gap-0"
+                    className="rounded-xl bg-secondary-2 px-4 py-3"
                   >
-                    <CardContent className="p-0">
-                      <div className="text-2xl font-bold text-primary">{stat.value}</div>
-                      <div className="text-xs text-muted-foreground">{stat.label}</div>
-                    </CardContent>
-                  </Card>
+                    <div className="text-2xl font-bold text-third">{stat.value}</div>
+                    <div className="text-xs text-muted-foreground">{stat.label}</div>
+                  </div>
                 ))}
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </main>
       </div>
     </div>
   )
 }
-
-
-
-
