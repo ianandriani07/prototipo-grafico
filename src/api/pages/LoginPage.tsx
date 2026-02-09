@@ -91,8 +91,9 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                     aria-invalid={!!errors.username}
                     disabled={isLoading}
                     className={cn(
-                      "h-12 bg-secondary-2 border-none text-primary-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-[#FFBE00] focus:border-[#FFBE00]",
-                      errors.username && "border-destructive focus:ring-destructive"
+                      "h-12 bg-secondary-2 border-none text-primary-foreground placeholder:text-muted-foreground selection:bg-third selection:text-secundary-foreground focus-visible:ring-2 focus-visible:ring-third focus-visible:border-third",
+                      errors.username &&
+                        "border-destructive focus-visible:ring-destructive focus-visible:border-destructive"
                     )}
                   />
                   {errors.username && (
@@ -120,14 +121,15 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                       aria-invalid={!!errors.password}
                       disabled={isLoading}
                       className={cn(
-                        "h-12 bg-secondary-2 border-border text-foreground placeholder:text-muted-foreground pr-12 focus:ring-2 focus:ring-primary focus:border-primary",
-                        errors.password && "border-destructive focus:ring-destructive"
+                        "h-12 bg-secondary-2 border-none text-foreground placeholder:text-muted-foreground pr-12 selection:bg-third selection:text-secundary-foreground focus-visible:ring-2 focus-visible:ring-third focus-visible:border-third",
+                        errors.password &&
+                          "border-destructive focus-visible:ring-destructive focus-visible:border-destructive"
                       )}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-primary-foreground"
                       aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
                     >
                       {showPassword ? (
@@ -150,7 +152,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                       checked={rememberMe}
                       onCheckedChange={setRememberMe}
                       disabled={isLoading}
-                      className="data-[state=checked]:bg-third"
+                      className="data-[state=checked]:bg-third data-[state=unchecked]:bg-secondary-2 data-[state=unchecked]:hover:bg-secondary-2/90 data-[state=unchecked]:active:bg-secondary-2/80 focus-visible:ring-third/50 focus-visible:border-third"
                     />
                     <Label
                       htmlFor="remember"

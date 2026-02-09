@@ -6,7 +6,7 @@ import { DashboardGrid } from "@/components/DashboardGrid"
 export function App() {
   const isAuthenticated  = null;
 
-  if (isAuthenticated) {
+  if (!isAuthenticated) {
     return <LoginPage />
   }
 
